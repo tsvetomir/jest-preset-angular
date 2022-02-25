@@ -2,6 +2,9 @@ import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { GridModule } from '@progress/kendo-angular-grid';
+
 import { RouterLinkDirectiveStub } from '../testing';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +27,10 @@ describe('AppComponent & TestModule', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
+        imports: [
+          ButtonsModule,
+          GridModule
+        ],
         declarations: [
           AppComponent,
           RouterLinkDirectiveStub,
