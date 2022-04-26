@@ -15,7 +15,7 @@ with Ivy compiler.
 // jest.config.js
 module.exports = {
   // [...]
-  globalSetup: 'jest-preset-angular/globalSetup',
+  globalSetup: 'jest-preset-angular/global-setup',
 };
 ```
 
@@ -24,7 +24,41 @@ module.exports = {
 ```json
 {
   "jest": {
-    "globalSetup": "jest-preset-angular/globalSetup"
+    "globalSetup": "jest-preset-angular/global-setup"
+  }
+}
+```
+
+Since **v12.0.0**, `jest-preset-angular` has some own config options under `ngJest` option in Jest `globals` config. One of those allows to skip `ngcc` processing.
+
+To skip `ngcc` which runs by `jest-preset-angular/global-setup`, one can do the following
+
+- in the `jest.config.js` where one is using `jest-preset-angular/global-setup`
+
+```js
+// jest.config.js
+module.exports = {
+  // [...]
+  globalSetup: 'jest-preset-angular/global-setup',
+  globals: {
+    ngJest: {
+      skipNgcc: true,
+    },
+  },
+};
+```
+
+- or in the `package.json` where one is using `jest-preset-angular/global-setup`
+
+```json
+{
+  "jest": {
+    "globalSetup": "jest-preset-angular/global-setup",
+    "globals": {
+      "ngJest": {
+        "skipNgcc": true
+      }
+    }
   }
 }
 ```
