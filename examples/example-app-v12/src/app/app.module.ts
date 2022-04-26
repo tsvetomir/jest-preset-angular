@@ -1,10 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { GridModule } from '@progress/kendo-angular-grid';
-
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { AboutComponent } from './about/about.component';
