@@ -1,15 +1,10 @@
 {
   "name": "process-js-packages",
-  "jest": {
-    "moduleFileExtensions": ["ts", "html", "js", "json", "mjs"],
-    "globals": {
-      "ts-jest": {
-        "isolatedModules": true
-      }
-    },
-    "transform": {
-      "^.+\\.(ts|js|mjs|html)$": "<rootDir>/../../build/index.js"
-    },
-    "transformIgnorePatterns": ["node_modules/(?!my-lib)"]
+  "private": true,
+  "devDependencies": {
+    "@googlemaps/markerclusterer": "^2.0.7",
+    "@types/lodash-es": "^4.17.6",
+    "lodash-es": "^4.17.21",
+    "tslib": "^2.4.0"
   }
 }

@@ -3,6 +3,25 @@ id: test-environment
 title: Test environment
 ---
 
-If you look at [`setup-jest.ts`](https://github.com/thymikee/jest-preset-angular/blob/main/src/config/setup-jest.ts),
-what we're doing here is we're adding globals required by Angular. With the included [jest-zone-patch](https://github.com/thymikee/jest-preset-angular/tree/main/src/zone-patch)
+If you look at [`setup-jest.js`](https://github.com/thymikee/jest-preset-angular/blob/main/setup-jest.js),
+what we're doing here is we're adding globals required by Angular. With the included [Angular zone patch](https://github.com/angular/angular/tree/main/packages/zone.js)
 we also make sure Jest test methods run in Zone context. Then we initialize the Angular testing environment like normal.
+
+While `setup-jest.js` above is for running Jest with **CommonJS** mode, we also provide [`setup-jest.mjs`](https://github.com/thymikee/jest-preset-angular/blob/main/setup-jest.mjs)
+to run with **ESM** mode.
+
+### Configure test environment
+
+When creating Angular test environment with `TestBed`, it is possible to specify the behavior of `teardown` via `globalThis` in the Jest setup file.
+For example:
+
+```ts
+// setup-test.ts
+globalThis.ngJest = {
+  destroyAfterEach: true,
+};
+
+import 'jest-preset-angular/setup-jest';
+```
+
+`jest-preset-angular` will look at `globalThis.ngJest` and pass the correct [`ModuleTearDownOptions`](https://github.com/angular/angular/blob/6952a0a3e68481564b2bc4955afb3ac186df6e34/packages/core/testing/src/test_bed_common.ts#L98) object to `TestBed`.

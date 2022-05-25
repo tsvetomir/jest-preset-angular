@@ -1,15 +1,57 @@
-# [12.0.0-next.0](https://github.com/thymikee/jest-preset-angular/compare/v11.1.1...v12.0.0-next.0) (2022-04-24)
+## [12.0.1](https://github.com/thymikee/jest-preset-angular/compare/v12.0.0...v12.0.1) (2022-05-14)
 
 
 ### Features
 
+* allow configuring `destroyAfterEach` via `globalThis` for setup test env ([#1469](https://github.com/thymikee/jest-preset-angular/issues/1469)) ([9a735f9](https://github.com/thymikee/jest-preset-angular/commit/9a735f9670a1d55743d3dad6abdc0473c22f2cf6)), closes [#1466](https://github.com/thymikee/jest-preset-angular/issues/1466)
+
+
+
+# [12.0.0](https://github.com/thymikee/jest-preset-angular/compare/v12.0.0-next.2...v12.0.0) (2022-05-10)
+
+
+### Bug Fixes
+
+* add missing `jest` and `typescript` to peer deps ([#1442](https://github.com/thymikee/jest-preset-angular/issues/1442)) ([6a652af](https://github.com/thymikee/jest-preset-angular/commit/6a652afbe893e344c2d4ed2f00528ab80ed52760)), closes [#1441](https://github.com/thymikee/jest-preset-angular/issues/1441)
+* set range supported version for Angular peer deps ([#1449](https://github.com/thymikee/jest-preset-angular/issues/1449)) ([f3e97d7](https://github.com/thymikee/jest-preset-angular/commit/f3e97d7be377a8099fa183b9e6de00a84786e471))
+
+
+### Features
+
+* **config:** add `setup-jest.mjs` for ESM mode ([#1463](https://github.com/thymikee/jest-preset-angular/issues/1463)) ([cc6ce3f](https://github.com/thymikee/jest-preset-angular/commit/cc6ce3fd92d00d8b5d71bec535ce2d625a4cc48c))
+* add an option to configure which file processed by `esbuild` ([#1455](https://github.com/thymikee/jest-preset-angular/issues/1455)) ([b58d089](https://github.com/thymikee/jest-preset-angular/commit/b58d089c255a600707a35cabcfa62fb413f8153b)), closes [#1413](https://github.com/thymikee/jest-preset-angular/issues/1413) [#1437](https://github.com/thymikee/jest-preset-angular/issues/1437)
+* drop support Node 12 ([04195d5](https://github.com/thymikee/jest-preset-angular/commit/04195d5326e370e76e6f76d1e2c9cf277cf975a0))
+* exclude `ng-jest-resolver` from default/esm presets ([#1440](https://github.com/thymikee/jest-preset-angular/issues/1440)) ([56673c4](https://github.com/thymikee/jest-preset-angular/commit/56673c4c086e6a4bf8fada5c196c5a50481b04f0))
+* remove `reflect-metadata` in `setup-jest` ([#1428](https://github.com/thymikee/jest-preset-angular/issues/1428)) ([5a36729](https://github.com/thymikee/jest-preset-angular/commit/5a367293ba490d7d717963b099db7531c347d1f4))
+* remove `zone-patch` and its fallback ([#1427](https://github.com/thymikee/jest-preset-angular/issues/1427)) ([bf9ea44](https://github.com/thymikee/jest-preset-angular/commit/bf9ea44a643311f3bbfbcbc67b493aa000336bee))
+* allow running `ngcc` with specific `tsconfig` path ([#1418](https://github.com/thymikee/jest-preset-angular/issues/1418)) ([5f535b5](https://github.com/thymikee/jest-preset-angular/commit/5f535b59227daea6e64e4886b0ea0bd5fd7c1365)), closes [#1348](https://github.com/thymikee/jest-preset-angular/issues/1348)
+* allow skip `ngcc` via `skipNgcc` option via `globalThis` ([#1417](https://github.com/thymikee/jest-preset-angular/issues/1417)) ([7950b5c](https://github.com/thymikee/jest-preset-angular/commit/7950b5cedfab066a268b16f5c87b5ad3670c6888)), closes [#1396](https://github.com/thymikee/jest-preset-angular/issues/1396)
 * remove `ngcc-jest-processor` entry file ([#1414](https://github.com/thymikee/jest-preset-angular/issues/1414)) ([2c5fd20](https://github.com/thymikee/jest-preset-angular/commit/2c5fd20f0535f5441d8bcb477538defdd9529926))
 
 
 ## BREAKING CHANGES
 
-* Drop Angular 10 support
-* Require Jest 28
+* Since **Angular 11**, the minimum version of `zone.js` is **0.11.x** and Angular 10 is EOL, so now we can use zone patch directly from `zone.js`. 
+If one is not using `zone.js@0.11.x`, please upgrade.
+* Now we are using Angular AST transformers, `reflect-metadata` is not needed anymore.
+* **Jest 28** correctly resolves Angular package format files so the `ng-jest-resolver` is now optional.
+* **Node 12** is no longer support
+* Previously, we always checked file extension `.mjs` and any files from `node_modules` excluding `tslib` to be processed with `esbuild`. 
+With the new option `processWithEsbuild`, now we put default all `.mjs` files to be processed by `esbuild`. Files like `lodash-es` default isn't processed by `esbuild`. 
+If you wish to use `esbuild` to process such files, please configure in your Jest config like
+```
+// jest.config.js
+module.exports = {
+    //...
+    globals: {
+         ngJest: {
+              processWithEsbuild: ['**/node_modules/lodash-es/*.js],
+         }
+    }
+}
+```
+* **Angular 10** is no longer support
+* Require **Jest 28**
 * `ngcc-jest-processor` entry file is now removed. One should use `jest-preset-angular/global-setup` instead.
 
 

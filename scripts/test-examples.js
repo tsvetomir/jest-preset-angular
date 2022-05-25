@@ -35,11 +35,13 @@ const executeTest = (projectPath) => {
   logger.log('installing bundled version of jest-preset-angular');
   logger.log();
 
-  ['build', 'presets', 'global-setup.js', 'jest-preset.js', 'package.json', 'setup-jest.js'].forEach((asset) => {
-    const assetToReplace = join(projectPath, 'node_modules', 'jest-preset-angular', asset);
-    const assetToCopy = join(rootDir, asset);
-    copySync(assetToCopy, assetToReplace, {});
-  });
+  ['build', 'presets', 'global-setup.js', 'jest-preset.js', 'package.json', 'setup-jest.js', 'setup-jest.mjs'].forEach(
+    (asset) => {
+      const assetToReplace = join(projectPath, 'node_modules', 'jest-preset-angular', asset);
+      const assetToCopy = join(rootDir, asset);
+      copySync(assetToCopy, assetToReplace, {});
+    }
+  );
 
   // then we can run the tests
   const cmdLine = ['yarn', 'test'];
@@ -66,27 +68,25 @@ const executeTest = (projectPath) => {
     env: process.env,
   });
 
-  if (projectPkg.version.startsWith('13')) {
-    logger.log();
-    logger.log('starting the ESM tests with isolatedModules: false using:', ...cmdESMLine);
-    logger.log();
+  logger.log();
+  logger.log('starting the ESM tests with isolatedModules: false using:', ...cmdESMLine);
+  logger.log();
 
-    execa.sync(cmdESMLine.shift(), cmdESMLine, {
-      cwd: projectPath,
-      stdio: 'inherit',
-      env: process.env,
-    });
+  execa.sync(cmdESMLine.shift(), cmdESMLine, {
+    cwd: projectPath,
+    stdio: 'inherit',
+    env: process.env,
+  });
 
-    logger.log();
-    logger.log('starting the ESM tests with isolatedModules: true using:', ...cmdESMIsolatedLine);
-    logger.log();
+  logger.log();
+  logger.log('starting the ESM tests with isolatedModules: true using:', ...cmdESMIsolatedLine);
+  logger.log();
 
-    execa.sync(cmdESMIsolatedLine.shift(), cmdESMIsolatedLine, {
-      cwd: projectPath,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  }
+  execa.sync(cmdESMIsolatedLine.shift(), cmdESMIsolatedLine, {
+    cwd: projectPath,
+    stdio: 'inherit',
+    env: process.env,
+  });
 };
 
 // This will trigger the build as well (not using yarn since yarn pack is buggy)

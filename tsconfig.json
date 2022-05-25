@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "strict": true,
+    "allowJs": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
@@ -16,5 +17,6 @@
     "module": "CommonJS",
     "lib": ["esnext", "dom"],
     "types": ["node", "jest"]
-  }
+  },
+  "files": ["src/global.d.ts"]
 }

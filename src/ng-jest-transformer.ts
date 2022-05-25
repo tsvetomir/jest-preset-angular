@@ -1,11 +1,10 @@
 import { spawnSync } from 'child_process';
-import path from 'path';
 
 import type { TransformedSource } from '@jest/transform';
 import { LogContexts, LogLevels, type Logger, createLogger } from 'bs-logger';
-import { ConfigSet } from 'ts-jest/dist/config/config-set';
+import type { ProjectConfigTsJest, TransformOptionsTsJest } from 'ts-jest';
+import { ConfigSet } from 'ts-jest/dist/legacy/config/config-set';
 import { TsJestTransformer } from 'ts-jest/dist/legacy/ts-jest-transformer';
-import type { ProjectConfigTsJest, TransformOptionsTsJest } from 'ts-jest/dist/types';
 
 import { NgJestCompiler } from './compiler/ng-jest-compiler';
 import { NgJestConfig } from './config/ng-jest-config';
@@ -55,16 +54,7 @@ export class NgJestTransformer extends TsJestTransformer {
   process(fileContent: string, filePath: string, transformOptions: TransformOptionsTsJest): TransformedSource {
     // @ts-expect-error we are accessing the private cache to avoid creating new objects all the time
     const configSet = super._configsFor(transformOptions);
-    /**
-     * TypeScript < 4.5 doesn't support compiling `.mjs` file by default when running `tsc` which throws error. Also we
-     * transform `js` files from `node_modules` assuming that `node_modules` contains compiled files to speed up compilation.
-     * IMPORTANT: we exclude `tslib` from compilation because it has issue with compilation. The original `tslib.js` or
-     * `tslib.es6.js` works well with Jest without extra compilation
-     */
-    if (
-      path.extname(filePath) === '.mjs' ||
-      (/node_modules\/(.*.js$)/.test(filePath.replace(/\\/g, '/')) && !filePath.includes('tslib'))
-    ) {
+    if (configSet.processWithEsbuild(filePath)) {
       this.#ngJestLogger.debug({ filePath }, 'process with esbuild');
 
       const compilerOpts = configSet.parsedTsConfig.options;

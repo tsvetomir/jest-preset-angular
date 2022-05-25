@@ -1,0 +1,34 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "rangeStrategy": "bump",
+  "schedule": ["after 8am every weekday", "every weekend"],
+  "ignoreDeps": ["@types/node", "execa", "chalk"],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "build",
+  "timezone": "UTC",
+  "packageRules": [
+    {
+      "matchPaths": ["examples/**", "e2e/**"],
+      "matchFiles": ["package.json"],
+      "matchPackagePatterns": ["^@angular"],
+      "matchPackageNames": ["jest-preset-angular"],
+      "groupName": "Angular packages"
+    },
+    {
+      "matchFiles": ["package.json"],
+      "matchDepTypes": [
+        "dependencies"
+      ],
+      "rangeStrategy": "in-range-only"
+    },
+    {
+      "matchDepTypes": [
+        "optionalDependencies",
+        "peerDependencies"
+      ],
+      "enabled": false
+    }
+  ]
+}
